@@ -21,10 +21,10 @@
         this.pi = 0;
     }
 
-    /** Computes the estimate of pi
-     * Generates many random sample points (i.e. pairs of numbers) lying inside a square and 
-     * @return the number of samples that lie inside a disk inscribed in the square. Pi can
-     * be estimated from the proportion of sample that fall in the disk. */
+    /** Computes an estimate of pi
+     * Runs MC simulations with @param numPoints samples distributed over @param numThreads
+     * threads and @return the number of samples lying inside a disk inscribed in the square.
+     * Pi can be estimated from the proportion of sample that fall in the disk. */
     public double getPiEstimate () {
         long[] piEstimates = new long[numThreads]; // shared array with an index for each thread
 	    Thread[] threads = new Thread[numThreads]; // array of threads
@@ -46,9 +46,9 @@
             } catch (InterruptedException ignored) {} // don't care if it gets interrupted
         }
 
-        //pi value = sum of points that were made in circle (sum of array) / total number of points * 4
+        // pi value = sum of points that were made in circle (sum of array) / total number of points * 4
         long pointsInCircle = 0; // number of points in inscribed circle
         for (long e : piEstimates) pointsInCircle += e;
-        return (double) pointsInCircle / numPoints * 4.0;
+        return (double) pointsInCircle / numPoints * 4.0; // pi estimate
     }
 }
